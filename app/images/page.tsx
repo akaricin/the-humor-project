@@ -10,16 +10,24 @@ export default function ImagesPage() {
 
   useEffect(() => {
     async function fetchImages() {
-      const supabase = getSupabaseClient();
-      const { data, error } = await supabase.from("images").select("*");
+      try {
+        const supabase = getSupabaseClient();
+        console.log("Fetching images...");
+        const { data, error } = await supabase.from("images").select("*");
+        console.log("Fetch complete.");
 
-      if (error) {
-        console.error("Error fetching images:", error);
-        setError(`Error loading images: ${error.message}`);
-      } else {
-        setImages(data);
+        if (error) {
+          console.error("Error fetching images:", error);
+          setError(`Error loading images: ${error.message}`);
+        } else {
+          setImages(data);
+        }
+        setLoading(false);
+      } catch (e: any) {
+        console.error("An unexpected error occurred:", e);
+        setError(`An unexpected error occurred: ${e.message}`);
+        setLoading(false);
       }
-      setLoading(false);
     }
 
     fetchImages();
