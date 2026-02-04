@@ -15,7 +15,7 @@ export default function ImagesPage() {
 
       if (error) {
         console.error("Error fetching images:", error);
-        setError("Error loading images.");
+        setError(`Error loading images: ${error.message}`);
       } else {
         setImages(data);
       }
