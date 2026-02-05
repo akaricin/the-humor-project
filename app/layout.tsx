@@ -19,9 +19,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
       </head>
-      <body className="antialiased flex jersey-10-regular">
+      <body className="antialiased flex flex-col md:flex-row jersey-10-regular">
         <Sidebar />
-        <div className="flex-grow pl-[640px]">{/* Adjust pl-[640px] to match sidebar width */}
+        <div className="flex-grow">
           {children}
         </div>
       </body>

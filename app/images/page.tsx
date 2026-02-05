@@ -31,18 +31,18 @@ export default async function ImagesPage() {
       <div className="table w-full border-separate border-spacing-y-4">
         <div className="table-header-group">
           <div className="table-row">
-            <div className="table-cell text-left font-bold">Image</div>
+            <div className="table-cell text-left font-bold w-1/3">Image</div>
             <div className="table-cell text-left font-bold">Description</div>
           </div>
         </div>
         <div className="table-row-group">
           {images.map((image) => (
             <div key={image.id} className="table-row bg-white rounded-lg shadow-md">
-              <div className="table-cell p-4 align-middle">
+              <div className="table-cell p-4 align-middle w-1/3">
                 <img
                   src={image.url!}
                   alt={image.image_description || "Image"}
-                  className="w-48 h-48 object-cover rounded-md"
+                  className="w-full h-auto min-w-[100px] max-w-xs object-cover rounded-md"
                 />
               </div>
               <div className="table-cell p-4 align-middle">

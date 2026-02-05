@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Sidebar() {
   return (
     <div
-      className={`fixed top-0 left-0 h-full bg-[#152238] text-white w-[640px] flex flex-col`}
+      className={`bg-[#152238] text-white w-full md:w-96 flex flex-col flex-shrink-0 min-w-[100px] h-auto md:h-screen`}
     >
       <nav className="flex flex-col p-6 mt-10">
         <Link href="/" className="py-4 px-6 bg-gray-700 hover:bg-gray-600 rounded text-center w-full mb-6 text-lg">
