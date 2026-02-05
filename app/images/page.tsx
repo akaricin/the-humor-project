@@ -28,22 +28,29 @@ export default async function ImagesPage() {
       <p className="text-lg text-gray-600 mb-8">
         A collection of humorous images.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-        {images.map((image) => (
-          <div
-            key={image.id}
-            className="bg-white rounded-lg shadow-md p-4 flex flex-col"
-          >
-            <div className="w-full h-48 mb-4">
-              <img
-                src={image.url!}
-                alt={image.image_description || "Image"}
-                className="w-full h-full object-cover rounded-md"
-              />
-            </div>
-            <p className="text-gray-800">{image.image_description}</p>
+      <div className="table w-full border-separate border-spacing-y-4">
+        <div className="table-header-group">
+          <div className="table-row">
+            <div className="table-cell text-left font-bold">Image</div>
+            <div className="table-cell text-left font-bold">Description</div>
           </div>
-        ))}
+        </div>
+        <div className="table-row-group">
+          {images.map((image) => (
+            <div key={image.id} className="table-row bg-white rounded-lg shadow-md">
+              <div className="table-cell p-4 align-middle">
+                <img
+                  src={image.url!}
+                  alt={image.image_description || "Image"}
+                  className="w-48 h-48 object-cover rounded-md"
+                />
+              </div>
+              <div className="table-cell p-4 align-middle">
+                <p className="text-gray-800">{image.image_description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </main>
   );
