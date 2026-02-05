@@ -16,14 +16,14 @@ export default async function ImagesPage() {
 
   if (!images) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-8 ml-[250px]">
+      <main className="flex min-h-screen flex-col items-center justify-center ml-[250px] mr-[8px] mb-[8px]">
         <p className="text-[18px]">No images found.</p>
       </main>
     );
   }
 
   return (
-    <main className="p-8 ml-[250px]">
+    <main className="ml-[250px] mr-[8px] mb-[8px]">
       <h1 className="text-[50px] font-bold text-gray-800 mb-4">Image Gallery</h1>
       <p className="text-lg text-gray-600 mb-8">
         A collection of humorous images.

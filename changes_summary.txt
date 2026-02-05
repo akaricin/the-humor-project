@@ -1,13 +1,14 @@
 All requested changes have been implemented successfully, and the application builds without errors.
 
 Here's a summary of the latest changes:
-- `components/Sidebar.tsx`:
-    - The sidebar's width has been updated to `md:w-[250px]` on medium screens and above.
-- `app/layout.tsx`:
-    - The left margin of the main content `div` has been updated to `md:ml-[250px]` to match the new sidebar width and ensure consistent layout.
 - `app/page.tsx` (Hello World page):
-    - Added `ml-[250px]` to the main `main` element to push the page content to the right, adjacent to the sidebar.
+    - Removed `p-8` (8px padding) from the main `main` element.
+    - Added `mr-[8px]` (8px right margin) and `mb-[8px]` (8px bottom margin) to the main `main` element.
 - `app/images/page.tsx` (Images page):
-    - Added `ml-[250px]` to both `main` elements (for the "No images found" case and the image gallery) to ensure their content is also pushed to the right.
+    - Removed `p-8` (8px padding) from both `main` elements.
+    - Added `mr-[8px]` (8px right margin) and `mb-[8px]` (8px bottom margin) to both `main` elements.
+- `components/Sidebar.tsx`:
+    - Removed `outline outline-2 outline-[#FEFEFA]` from both `Link` components (sidebar buttons) to remove the outline.
+    - Added `no-underline` to both `Link` components (sidebar buttons) to remove the default underline.
 
-These changes should ensure the sidebar is properly positioned side-by-side with the webpage content, preventing any blocking.
+These changes should address the margin adjustments and styling updates for the sidebar buttons as requested.
