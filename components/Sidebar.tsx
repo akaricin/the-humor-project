@@ -9,10 +9,10 @@ export default function Sidebar() {
     >
       <nav className="flex flex-col p-6">
 
-        <Link href="/" className="py-4 px-6 bg-gray-700 hover:bg-gray-600 rounded-xl text-center w-4/5 mx-auto mb-6 text-[30px] no-underline">
+        <Link href="/" className="py-4 px-6 bg-gray-700 rounded-xl text-center w-4/5 mx-auto mb-6 text-[30px] no-underline">
           Hello World
         </Link>
-        <Link href="/images" className="py-4 px-6 bg-gray-700 hover:bg-gray-600 rounded-xl text-center w-4/5 mx-auto mb-6 text-[30px] no-underline">
+        <Link href="/images" className="py-4 px-6 bg-gray-700 rounded-xl text-center w-4/5 mx-auto mb-6 text-[30px] no-underline">
           Images
         </Link>
       </nav>

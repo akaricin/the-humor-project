@@ -1,14 +1,8 @@
 All requested changes have been implemented successfully, and the application builds without errors.
 
 Here's a summary of the latest changes:
-- `app/page.tsx` (Hello World page):
-    - Removed `p-8` (8px padding) from the main `main` element.
-    - Added `mr-[8px]` (8px right margin) and `mb-[8px]` (8px bottom margin) to the main `main` element.
-- `app/images/page.tsx` (Images page):
-    - Removed `p-8` (8px padding) from both `main` elements.
-    - Added `mr-[8px]` (8px right margin) and `mb-[8px]` (8px bottom margin) to both `main` elements.
 - `components/Sidebar.tsx`:
-    - Removed `outline outline-2 outline-[#FEFEFA]` from both `Link` components (sidebar buttons) to remove the outline.
-    - Added `no-underline` to both `Link` components (sidebar buttons) to remove the default underline.
+    - Confirmed sidebar width is `md:w-[250px]`.
+    - Removed `hover:bg-gray-600` from both `Link` components (sidebar buttons) to disable the background color change on hover, thus preventing an apparent text color change.
 
-These changes should address the margin adjustments and styling updates for the sidebar buttons as requested.
+The sidebar width remains at 250px and the hover effect on the sidebar links has been removed as requested.
