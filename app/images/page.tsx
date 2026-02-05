@@ -17,22 +17,22 @@ export default async function ImagesPage() {
   if (!images) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center p-8">
-        <p>No images found.</p>
+        <p className="text-[18px]">No images found.</p>
       </main>
     );
   }
 
   return (
     <main className="p-8">
-      <h1 className="text-5xl font-bold text-gray-800 mb-4">Image Gallery</h1>
+      <h1 className="text-[50px] font-bold text-gray-800 mb-4">Image Gallery</h1>
       <p className="text-lg text-gray-600 mb-8">
         A collection of humorous images.
       </p>
       <div className="table w-full border-separate border-spacing-y-4">
         <div className="table-header-group">
           <div className="table-row">
-            <div className="table-cell text-left font-bold w-1/3">Image</div>
-            <div className="table-cell text-left font-bold">Description</div>
+            <div className="table-cell text-left font-bold w-1/3 text-[40px]">Image</div>
+            <div className="table-cell text-left font-bold text-[40px]">Description</div>
           </div>
         </div>
         <div className="table-row-group">
@@ -42,11 +42,11 @@ export default async function ImagesPage() {
                 <img
                   src={image.url!}
                   alt={image.image_description || "Image"}
-                  className="w-full h-auto min-w-[100px] max-w-xs object-cover rounded-md"
+                  className="w-full h-auto min-w-[100px] max-w-[200px] object-cover rounded-md"
                 />
               </div>
               <div className="table-cell p-4 align-middle">
-                <p className="text-gray-800">{image.image_description}</p>
+                <p className="text-[18px] text-gray-800">{image.image_description}</p>
               </div>
             </div>
           ))}
