@@ -2,8 +2,12 @@ All requested changes have been implemented successfully, and the application bu
 
 Here's a summary of the latest changes:
 - `components/Sidebar.tsx`:
-    - The sidebar's width has been adjusted to `md:w-[170px]` on medium screens and above.
+    - The sidebar's width has been updated to `md:w-[250px]` on medium screens and above.
 - `app/layout.tsx`:
-    - The left margin of the main content `div` has been adjusted to `md:ml-[170px]` to match the new sidebar width, ensuring the content is pushed to the right and appears side-by-side with the fixed sidebar.
+    - The left margin of the main content `div` has been updated to `md:ml-[250px]` to match the new sidebar width and ensure consistent layout.
+- `app/page.tsx` (Hello World page):
+    - Added `ml-[250px]` to the main `main` element to push the page content to the right, adjacent to the sidebar.
+- `app/images/page.tsx` (Images page):
+    - Added `ml-[250px]` to both `main` elements (for the "No images found" case and the image gallery) to ensure their content is also pushed to the right.
 
-The CSS properties implemented (`fixed` sidebar, `flex-row` on body, `md:ml` on content) are designed to achieve a side-by-side layout for medium screens and above. If the sidebar is still "blocking" content, it might indicate a more complex layout issue that would require further investigation, possibly involving screenshots or a more precise description of the blocking behavior.
+These changes should ensure the sidebar is properly positioned side-by-side with the webpage content, preventing any blocking.
