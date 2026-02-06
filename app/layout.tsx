@@ -21,7 +21,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased flex jersey-10-regular">
         <Sidebar />
-        <div className="flex-grow ml-[250px]">
+        <div className="flex-grow">
           {children}
         </div>
       </body>
