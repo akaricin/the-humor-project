@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Sidebar() {
   return (
     <div
-      className={`fixed left-0 top-0 ml-[-8px] mt-[-8px] z-50 bg-[#152238] text-[#FEFEFA] md:w-[250px] flex flex-col flex-shrink-0 min-w-[100px] h-screen`}
+      className={`fixed left-0 top-0 ml-[-8px] mt-[-8px] z-50 bg-[#152238] text-[#FEFEFA] w-[250px] flex flex-col flex-shrink-0 h-screen`}
     >
       <nav className="flex flex-col p-6">
 
