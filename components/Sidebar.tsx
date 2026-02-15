@@ -38,7 +38,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="fixed left-0 top-0 w-[100px] h-screen bg-[#152238] flex flex-col justify-between z-50">
+    <div className="fixed left-0 top-0 w-[200px] h-screen bg-[#152238] flex flex-col justify-between z-50">
       <nav className="pt-20 px-6 flex flex-col gap-y-12">
         <Link
           href="/"
@@ -64,7 +64,7 @@ export default function Sidebar() {
         ) : (
           <button
             onClick={handleSignIn}
-            className="text-[30px] text-center bg-transparent border-none text-[#FEFEFA] w-full hover:opacity-80"
+            className="py-3 px-6 bg-gray-700 rounded-xl text-center w-full text-[30px] no-underline hover:bg-gray-700 transition-colors jersey-10-regular"
           >
             Sign In
           </button>

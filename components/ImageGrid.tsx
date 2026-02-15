@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react"; // Import useEffect
+import { useState } from "react"; // Removed useEffect import
 import { createPortal } from "react-dom"; // Import createPortal
 import { Database } from "@/types/supabase"; // Import Database type
 
@@ -12,15 +12,7 @@ interface ImageGridProps {
 
 export default function ImageGrid({ images }: ImageGridProps) {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
-  const [mounted, setMounted] = useState(false); // State to track if component is mounted
-
-  useEffect(() => {
-    setMounted(true); // Set mounted to true after initial render
-  }, []);
-
-  if (!mounted) {
-    return null; // Don't render anything until mounted to prevent SSR errors with portals
-  }
+  // Removed mounted state and useEffect hook
 
   return (
     <>
@@ -53,7 +45,7 @@ export default function ImageGrid({ images }: ImageGridProps) {
       </div>
 
       {/* The Modal (Fullscreen) - Rendered via Portal */}
-      {selectedImage && createPortal(
+      {selectedImage && typeof window !== 'undefined' && createPortal( // Conditional on window being defined
         // The Backdrop
         <div
           className="fixed inset-0 w-screen h-screen bg-black/95 flex items-center justify-center !z-[99999]"
@@ -84,11 +76,13 @@ export default function ImageGrid({ images }: ImageGridProps) {
             </div>
 
             {/* Right Side (Text) */}
-            <div className="w-1/2 h-full p-8 flex flex-col justify-center bg-[#FEFEFA]">
-              <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-gray-500 mb-2">Description</h3>
-              <p className="text-3xl font-black text-black leading-tight">
-                {selectedImage.image_description}
-              </p>
+            <div className="w-1/2 h-full bg-[#FEFEFA] flex flex-col justify-center overflow-hidden">
+              <div className="p-4 h-full w-full flex flex-col overflow-y-auto custom-scrollbar scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-100">
+                <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-gray-500 mb-2">Description</h3>
+                <p className="text-xl font-black text-black leading-relaxed pb-4">
+                  {selectedImage.image_description}
+                </p>
+              </div>
             </div>
           </div>
         </div>,

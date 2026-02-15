@@ -8,7 +8,7 @@ export default async function Home() {
   } = await supabase.auth.getUser()
 
   return (
-    <main className="flex h-screen w-full flex-col items-center justify-center bg-[#b1c5e7]">
+    <main className="ml-[50px] flex h-screen flex-col items-center justify-center bg-[#b1c5e7]">
       <h1 className="text-5xl font-bold text-gray-800 mb-4">Hello World</h1>
     </main>
   )
