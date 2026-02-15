@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Import useEffect
+import { createPortal } from "react-dom"; // Import createPortal
 import { Database } from "@/types/supabase"; // Import Database type
 
 type GalleryImage = Pick<Database['public']['Tables']['images']['Row'], 'id' | 'url' | 'image_description'>; // Define GalleryImage type
@@ -11,50 +12,87 @@ interface ImageGridProps {
 
 export default function ImageGrid({ images }: ImageGridProps) {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [mounted, setMounted] = useState(false); // State to track if component is mounted
+
+  useEffect(() => {
+    setMounted(true); // Set mounted to true after initial render
+  }, []);
+
+  if (!mounted) {
+    return null; // Don't render anything until mounted to prevent SSR errors with portals
+  }
 
   return (
     <>
-      {/* The Grid Parent */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-        {images.map((image) => (
-          // The Image Cards
-          <div
-            key={image.id}
-            className="relative aspect-square overflow-hidden rounded-2xl bg-white shadow-md cursor-pointer group"
-            onClick={() => setSelectedImage(image)}
-          >
-            <img
-              src={image.url!}
-              alt={image.image_description || "Image"}
-              className="w-full h-full object-cover transition-transform group-hover:scale-105"
-            />
-          </div>
-        ))}
+      {/* Outer wrapper */}
+      <div className="w-full block">
+        {/* The Grid Parent */}
+        <div className="grid grid-cols-3 gap-10 w-full">
+          {images.map((image) => (
+            // The Image Cards (The Sharp Frame)
+            <div
+              key={image.id}
+              className="relative aspect-square cursor-pointer border-[6px] border-gray-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all"
+              onClick={() => { console.log('Image clicked:', image.id); setSelectedImage(image); }}
+            >
+              {/* The Image Styling */}
+              <img
+                src={image.url!}
+                alt={image.image_description || "Image"}
+                className="w-full h-full object-cover grayscale-[30%] hover:grayscale-0 transition-all"
+              />
+              {/* The Hover Feature (Description) */}
+              <div className="absolute inset-0 bg-black/70 flex items-center justify-center p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-white text-center font-bold text-xl">
+                  {image.image_description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* The Modal (Click to Expand) */}
-      {selectedImage && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center p-4">
-          {/* Close button */}
-          <button
-            onClick={() => setSelectedImage(null)}
-            className="absolute top-4 right-4 text-[#FEFEFA] text-4xl font-bold hover:opacity-70"
+      {/* The Modal (Fullscreen) - Rendered via Portal */}
+      {selectedImage && createPortal(
+        // The Backdrop
+        <div
+          className="fixed inset-0 w-screen h-screen bg-black/95 flex items-center justify-center !z-[99999]"
+          onClick={() => setSelectedImage(null)} // Click outside to close
+        >
+          {/* The Window */}
+          <div
+            className="relative bg-white border-[8px] border-black shadow-[30px_30px_0px_0px_rgba(0,0,0,1)] flex overflow-hidden"
+            style={{ width: '1000px', height: '400px' }} // Inline styles for exact dimensions
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
           >
-            &times;
-          </button>
+            {/* The Close Button */}
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute -top-4 -right-4 bg-black text-white w-10 h-10 flex items-center justify-center font-bold border-2 border-white z-[101]"
+            >
+              &times;
+            </button>
 
-          {/* Expanded Image */}
-          <img
-            src={selectedImage.url!}
-            alt={selectedImage.image_description || "Image"}
-            className="max-w-4xl max-h-[70vh] object-contain rounded-lg"
-          />
+            {/* Split-Screen Layout */}
+            {/* Left Side (Image) */}
+            <div className="w-1/2 h-full border-r-[8px] border-black">
+              <img
+                src={selectedImage.url!}
+                alt={selectedImage.image_description || "Image"}
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-          {/* Description */}
-          <p className="text-[#FEFEFA] text-2xl mt-6 font-bold text-center px-4">
-            {selectedImage.image_description}
-          </p>
-        </div>
+            {/* Right Side (Text) */}
+            <div className="w-1/2 h-full p-8 flex flex-col justify-center bg-[#FEFEFA]">
+              <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-gray-500 mb-2">Description</h3>
+              <p className="text-3xl font-black text-black leading-tight">
+                {selectedImage.image_description}
+              </p>
+            </div>
+          </div>
+        </div>,
+        document.body // Portal target
       )}
     </>
   );

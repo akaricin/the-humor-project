@@ -26,13 +26,10 @@ export default async function ImagesPage() {
   }
 
   return (
-    <div className="p-10 bg-[#b1c5e7] min-h-screen">
-      <div className="w-full">
+    <div className="p-10 bg-[#b1c5e7] min-h-screen w-full"> {/* Add w-full here */}
+      <div className="w-full min-w-0 block"> {/* Add w-full here */}
         <h1 className="text-[50px] font-bold text-gray-800 mb-4">Image Gallery</h1>
-        <p className="text-lg text-gray-600 mb-8">
-          A collection of humorous images.
-        </p>
-        {/* Ensure this container is NOT centered by a parent flex-col */}
+        <p className="text-lg text-gray-600 mb-8">A collection of humorous images.</p>
         <ImageGrid images={images} />
       </div>
     </div>
