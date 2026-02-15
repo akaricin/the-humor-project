@@ -19,11 +19,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
       </head>
-      <body className="antialiased flex jersey-10-regular">
+      <body className="antialiased m-0 p-0 flex">
         <Sidebar />
-        <div className="flex-grow ml-[250px]">
+        <main className="ml-[100px] flex-grow min-h-screen">
           {children}
-        </div>
+        </main>
       </body>
     </html>
   );

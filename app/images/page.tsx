@@ -1,57 +1,40 @@
-import { getSupabaseClient } from "@/lib/supabase";
+import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
+import ImageGrid from "@/components/ImageGrid";
+import { Database } from "@/types/supabase"; // Keep import for Database if createClient needs it
 
 export default async function ImagesPage() {
-  const supabase = getSupabaseClient();
-  const { data: images, error } = await supabase
+  const supabase = await createClient();
+  const { data, error } = await supabase
     .from("images")
     .select("id, url, image_description")
     .eq("is_public", true);
 
+  const images = data; // Let TypeScript infer the type, or cast if necessary after
+
   if (error) {
     console.error("Error fetching images:", error);
-    // This will render the not-found page, which is a good way to handle critical data fetching errors
     notFound();
   }
 
-  if (!images) {
+  if (!images || images.length === 0) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center  mr-[8px] mb-[8px]">
-        <p className="text-[18px]">No images found.</p>
-      </main>
+      <div className="p-10 bg-[#b1c5e7] min-h-screen block text-center">
+        <p className="text-[18px] text-gray-800">No images found.</p>
+      </div>
     );
   }
 
   return (
-    <main className=" mr-[8px] mb-[8px]">
-      <h1 className="text-[50px] font-bold text-gray-800 mb-4">Image Gallery</h1>
-      <p className="text-lg text-gray-600 mb-8">
-        A collection of humorous images.
-      </p>
-      <div className="table w-full border-separate border-spacing-y-4">
-        <div className="table-header-group">
-          <div className="table-row">
-            <div className="table-cell text-left font-bold w-1/3 text-[40px]">Image</div>
-            <div className="table-cell text-left font-bold text-[40px]">Description</div>
-          </div>
-        </div>
-        <div className="table-row-group">
-          {images.map((image) => (
-            <div key={image.id} className="table-row bg-white rounded-lg shadow-md">
-              <div className="table-cell p-4 align-middle w-1/3">
-                <img
-                  src={image.url!}
-                  alt={image.image_description || "Image"}
-                  className="w-full h-auto min-w-[100px] max-w-[200px] object-cover rounded-md"
-                />
-              </div>
-              <div className="table-cell p-4 align-middle">
-                <p className="text-[18px] text-gray-800">{image.image_description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="p-10 bg-[#b1c5e7] min-h-screen">
+      <div className="w-full">
+        <h1 className="text-[50px] font-bold text-gray-800 mb-4">Image Gallery</h1>
+        <p className="text-lg text-gray-600 mb-8">
+          A collection of humorous images.
+        </p>
+        {/* Ensure this container is NOT centered by a parent flex-col */}
+        <ImageGrid images={images} />
       </div>
-    </main>
+    </div>
   );
 }

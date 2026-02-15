@@ -1,21 +1,75 @@
 "use client";
 
 import Link from "next/link";
+import { createClient } from "../utils/supabase/client";
+import { useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
+import LogoutButton from "./LogoutButton";
 
 export default function Sidebar() {
-  return (
-    <div
-      className={`fixed left-0 top-0 ml-[-8px] mt-[-8px] z-50 bg-[#152238] text-[#FEFEFA] w-[250px] flex flex-col flex-shrink-0 h-screen`}
-    >
-      <nav className="flex flex-col p-6">
+  const [user, setUser] = useState<User | null>(null);
+  const supabase = createClient();
 
-        <Link href="/" className="py-4 px-6 bg-gray-700 rounded-xl text-center w-4/5 mx-auto my-5 text-[30px] no-underline">
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+    fetchUser();
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  const handleSignIn = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+  };
+
+  return (
+    <div className="fixed left-0 top-0 w-[100px] h-screen bg-[#152238] flex flex-col justify-between z-50">
+      <nav className="pt-20 px-6 flex flex-col gap-y-12">
+        <Link
+          href="/"
+          className="py-3 px-6 rounded-xl text-center w-full text-[30px] no-underline hover:bg-gray-700 transition-colors"
+        >
           Hello World
         </Link>
-        <Link href="/images" className="py-4 px-6 bg-gray-700 rounded-xl text-center w-4/5 mx-auto my-5 text-[30px] no-underline">
+        <Link
+          href="/images"
+          className="py-3 px-6 rounded-xl text-center w-full text-[30px] no-underline hover:bg-gray-700 transition-colors"
+        >
           Images
         </Link>
       </nav>
+
+      <div className="pb-10 px-6">
+        {user ? (
+          <div>
+            <p className="text-3xl font-extrabold text-[#FEFEFA]">Account</p>
+            <p className="text-sm opacity-70 text-[#FEFEFA]">{user.email}</p>
+            <LogoutButton />
+          </div>
+        ) : (
+          <button
+            onClick={handleSignIn}
+            className="text-[30px] text-center bg-transparent border-none text-[#FEFEFA] w-full hover:opacity-80"
+          >
+            Sign In
+          </button>
+        )}
+      </div>
     </div>
   );
 }
