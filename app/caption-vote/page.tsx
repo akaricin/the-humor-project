@@ -85,12 +85,12 @@ function CaptionVoteContent() {
           {/* Button Area */}
           <div className="flex justify-between p-4 gap-4 border-t-[6px] border-black bg-gray-50">
             <button
-              className="w-full text-black font-bold py-3 px-4 bg-red-300 border-2 border-black shadow-[4px_4px_0px_0px_black] active:translate-y-1 active:shadow-none"
+              className="w-full text-black font-bold py-3 px-4 transition-all bg-[#ff9999] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
             >
               Downvote
             </button>
             <button
-              className="w-full text-black font-bold py-3 px-4 bg-green-300 border-2 border-black shadow-[4px_4px_0px_0px_black] active:translate-y-1 active:shadow-none"
+              className="w-full text-black font-bold py-3 px-4 transition-all bg-[#90ee90] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
             >
               Upvote
             </button>
