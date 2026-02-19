@@ -84,11 +84,11 @@ function CaptionVoteContent() {
       ) : (
         <div className="w-[350px] min-h-[600px] mx-auto my-10 bg-white border-[6px] border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between overflow-hidden">
           {/* Image Area */}
-          <div className="w-full aspect-square border-b-[6px] border-black flex items-center justify-center bg-gray-200">
+          <div className="w-full aspect-square overflow-hidden bg-gray-200 border-b-[6px] border-black">
             {captions.length === 0 ? (
-              <p className="text-black text-xl font-bold">SHUFFLING THE DECK...</p>
+              <p className="text-black text-xl font-bold flex items-center justify-center h-full">SHUFFLING THE DECK...</p>
             ) : currentCaption?.images?.url ? (
-              <img src={currentCaption.images.url} alt={currentCaption.content} className="w-full h-full object-cover" />
+              <img src={currentCaption.images.url} alt={currentCaption.content} className="w-full h-full object-cover block" />
             ) : null}
           </div>
           
