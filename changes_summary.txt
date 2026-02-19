@@ -4,5 +4,13 @@ Here's a summary of the latest changes:
 - `components/Sidebar.tsx`:
     - Confirmed sidebar width is `md:w-[250px]`.
     - Removed `hover:bg-gray-600` from both `Link` components (sidebar buttons) to disable the background color change on hover, thus preventing an apparent text color change.
-
-The sidebar width remains at 250px and the hover effect on the sidebar links has been removed as requested.
+- `app/caption-vote/page.tsx`:
+    - Added `created_datetime_utc` and `modified_datetime_utc` fields to the `caption_votes` insert operation, ensuring they use `new Date().toISOString()` for GMT+0 timestamping.
+- `app/globals.css`:
+    - Updated the `body` background color from `#B5C7EB` to `#f0e6ff`, and then to `#b5c7eb`.
+- `app/images/page.tsx`:
+    - Replaced background color `#b1c5e7` with `#f0e6ff`, and then `f0e6ff` with `#b5c7eb`.
+- Global search and replace for `#b5c7eb`:
+    - No occurrences of `#b5c7eb` were found in any files, indicating that this color code is no longer present in the codebase.
+- Global search and replace for `#f0e6ff`:
+    - Replaced all occurrences of `#f0e6ff` with `#b5c7eb` in `app/page.tsx`, `app/images/page.tsx`, `app/globals.css`, and `app/caption-vote/page.tsx`.

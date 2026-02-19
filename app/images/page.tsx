@@ -19,14 +19,14 @@ export default async function ImagesPage() {
 
   if (!images || images.length === 0) {
     return (
-      <div className="p-10 bg-[#b1c5e7] min-h-screen block text-center">
+      <div className="p-10 bg-[#b5c7eb] min-h-screen block text-center">
         <p className="text-[18px] text-gray-800">No images found.</p>
       </div>
     );
   }
 
   return (
-    <div className="p-10 min-h-screen bg-[#b1c5e7]">
+    <div className="p-10 min-h-screen bg-[#b5c7eb]">
       <div className="w-full min-w-0 block"> {/* Add w-full here */}
         <h1 className="text-[50px] font-bold text-gray-800 mb-4">Image Gallery</h1>
         <p className="text-lg text-gray-600 mb-8">A collection of humorous images.</p>
