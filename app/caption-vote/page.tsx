@@ -55,7 +55,11 @@ function CaptionVoteContent() {
         } else {
           console.log("Fetched Data:", data);
           if (data && data.length > 0) {
-            const shuffled = shuffleArray(data);
+            const formattedData = data.map((item: any) => ({
+              ...item,
+              images: Array.isArray(item.images) ? item.images[0] : item.images
+            }));
+            const shuffled = shuffleArray(formattedData);
             setCaptions(shuffled);
           } else {
             setCaptions([]); // Set to empty if data is null or empty array
