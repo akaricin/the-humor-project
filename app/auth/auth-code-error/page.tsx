@@ -9,7 +9,7 @@ export default function AuthCodeError() {
     // Small delay to prevent flashing, then redirect home
     const timer = setTimeout(() => {
       router.push('/');
-    }, 100);
+    }, 2000);
     return () => clearTimeout(timer);
   }, [router]);
 
