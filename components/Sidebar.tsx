@@ -58,6 +58,12 @@ export default function Sidebar() {
         >
           Vote
         </Link>
+        <Link
+          href="/upload"
+          className="py-3 px-6 rounded-xl text-center w-full text-[30px] no-underline hover:bg-gray-700 transition-colors"
+        >
+          Upload
+        </Link>
       </nav>
 
       <div className="pb-10 px-6">

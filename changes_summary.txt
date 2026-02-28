@@ -4,6 +4,7 @@ Here's a summary of the latest changes:
 - `components/Sidebar.tsx`:
     - Confirmed sidebar width is `md:w-[250px]`.
     - Removed `hover:bg-gray-600` from both `Link` components (sidebar buttons) to disable the background color change on hover, thus preventing an apparent text color change.
+    - Added a new `Link` to `/upload` with a "Upload" text.
 - `app/caption-vote/page.tsx`:
     - Added `created_datetime_utc` and `modified_datetime_utc` fields to the `caption_votes` insert operation, ensuring they use `new Date().toISOString()` for GMT+0 timestamping.
 - `app/globals.css`:
@@ -19,3 +20,9 @@ Here's a summary of the latest changes:
     - Added `uploadToS3` function to `lib/pipeline.ts` for uploading files to S3 using a presigned URL, including error handling.
     - Added `registerImage` function to `lib/pipeline.ts` to register an image with the captioning API, including error handling.
     - Added `generateCaptions` function to `lib/pipeline.ts` to generate captions for an image, including error handling.
+- `app/upload/page.tsx`:
+    - Created a new page for uploading images and generating captions.
+    - Implemented auth mirroring to handle logged-in and logged-out states.
+    - Added UI for file selection, image preview, and status updates.
+    - Integrated the 4-step pipeline from `lib/pipeline.ts`.
+    - Displays generated captions or an error alert.
