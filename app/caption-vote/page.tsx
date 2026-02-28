@@ -55,9 +55,9 @@ function CaptionVoteContent() {
         } else {
           console.log("Fetched Data:", data);
           if (data && data.length > 0) {
-            const formattedData = data.map((item: any) => ({
+            const formattedData = data.map((item) => ({
               ...item,
-              images: Array.isArray(item.images) ? item.images[0] : item.images
+              images: Array.isArray(item.images) ? item.images[0] : (item.images as { url: string } | null)
             }));
             const shuffled = shuffleArray(formattedData);
             setCaptions(shuffled);
@@ -133,9 +133,9 @@ function CaptionVoteContent() {
             {captions.length === 0 ? (
               ""
             ) : isFinished ? (
-              <p className="font-bold">YOU'VE SEEN EVERYTHING!</p>
+              <p className="font-bold">YOU&apos;VE SEEN EVERYTHING!</p>
             ) : (
-              <p>"{currentCaption?.content}"</p>
+              <p>&quot;{currentCaption?.content}&quot;</p>
             )}
           </div>
 

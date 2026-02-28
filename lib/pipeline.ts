@@ -59,7 +59,12 @@ export async function registerImage(cdnUrl: string, supabaseToken: string): Prom
   };
 }
 
-export async function generateCaptions(imageId: string, supabaseToken: string): Promise<any[]> {
+export interface CaptionResult {
+  id: string;
+  content: string;
+}
+
+export async function generateCaptions(imageId: string, supabaseToken: string): Promise<{ captions: CaptionResult[] }> {
   const response = await fetch('https://api.almostcrackd.ai/pipeline/generate-captions', {
     method: 'POST',
     headers: {
@@ -74,5 +79,5 @@ export async function generateCaptions(imageId: string, supabaseToken: string): 
   }
 
   const data = await response.json();
-  return data.captions; // Assuming the API returns an object with a 'captions' array
+  return data;
 }

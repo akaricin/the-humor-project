@@ -21,7 +21,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased m-0 p-0 flex jersey-10-regular">
         <Sidebar />
-        <main className="ml-[250px] flex-1 min-h-screen">
+        <main className="ml-[200px] flex-1 min-h-screen">
           {children}
         </main>
       </body>
