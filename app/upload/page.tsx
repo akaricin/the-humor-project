@@ -97,7 +97,7 @@ export default function UploadPage() {
             </button>
           </div>
           {status && <p className="mb-4">{status}</p>}
-          {captions.length > 0 && (
+          {captions && captions.length > 0 && (
             <div className="w-full mt-4">
               <h3 className="text-xl font-bold mb-2">Generated Captions:</h3>
               <ul className="border-4 border-black p-4 bg-gray-100">

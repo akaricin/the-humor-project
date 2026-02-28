@@ -26,3 +26,4 @@ Here's a summary of the latest changes:
     - Added UI for file selection, image preview, and status updates.
     - Integrated the 4-step pipeline from `lib/pipeline.ts`.
     - Displays generated captions or an error alert.
+    - Fixed a TypeError by adding a safety check for the `captions` array before rendering.
