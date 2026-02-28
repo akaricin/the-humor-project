@@ -1,4 +1,3 @@
-
 export async function generatePresignedUrl(fileType: string, supabaseToken: string): Promise<{ presignedUrl: string; cdnUrl: string }> {
   const response = await fetch('https://api.almostcrackd.ai/pipeline/generate-presigned-url', {
     method: 'POST',
@@ -60,3 +59,20 @@ export async function registerImage(cdnUrl: string, supabaseToken: string): Prom
   };
 }
 
+export async function generateCaptions(imageId: string, supabaseToken: string): Promise<any[]> {
+  const response = await fetch('https://api.almostcrackd.ai/pipeline/generate-captions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${supabaseToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ imageId: imageId }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to generate captions: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.captions; // Assuming the API returns an object with a 'captions' array
+}
