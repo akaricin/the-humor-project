@@ -15,6 +15,7 @@ export default function UploadPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [status, setStatus] = useState('');
   const [captions, setCaptions] = useState<any[]>([]);
+  const [finalUrl, setFinalUrl] = useState('');
 
   useEffect(() => {
     const getUser = async () => {
@@ -30,6 +31,9 @@ export default function UploadPage() {
     if (file) {
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
+      setCaptions([]);
+      setStatus('');
+      setFinalUrl('');
     }
   };
 
@@ -38,6 +42,7 @@ export default function UploadPage() {
 
     setIsUploading(true);
     setCaptions([]);
+    setFinalUrl('');
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const supabaseToken = session?.access_token;
@@ -45,6 +50,7 @@ export default function UploadPage() {
 
       setStatus('Step 1/4: Generating presigned URL...');
       const { presignedUrl, cdnUrl } = await generatePresignedUrl(selectedFile.type, supabaseToken);
+      setFinalUrl(cdnUrl);
 
       setStatus('Step 2/4: Uploading to S3...');
       await uploadToS3(presignedUrl, selectedFile);
@@ -54,7 +60,9 @@ export default function UploadPage() {
 
       setStatus('Step 4/4: Generating captions...');
       const generatedCaptions = await generateCaptions(imageId, supabaseToken);
-      setCaptions(generatedCaptions);
+      if (Array.isArray(generatedCaptions)) {
+        setCaptions(generatedCaptions.slice(0, 10));
+      }
       setStatus('Done!');
 
     } catch (error: any) {
@@ -63,6 +71,10 @@ export default function UploadPage() {
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(finalUrl);
   };
 
   if (loadingUser) {
@@ -96,13 +108,20 @@ export default function UploadPage() {
               {isUploading ? 'Generating...' : 'Generate Captions'}
             </button>
           </div>
-          {status && <p className="mb-4">{status}</p>}
-          {captions && captions.length > 0 && (
+          {status && status !== 'Done!' && <p className="mb-4">{status}</p>}
+          {status === 'Done!' && (
             <div className="w-full mt-4">
+              <div className="mb-4">
+                <label className="font-bold">Image URL:</label>
+                <div className="flex gap-2">
+                  <input type="text" readOnly value={finalUrl} className="flex-grow p-2 border-2 border-black bg-gray-100" />
+                  <button onClick={handleCopy} className="py-2 px-4 bg-blue-400 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[1px] active:translate-y-[1px]">Copy</button>
+                </div>
+              </div>
               <h3 className="text-xl font-bold mb-2">Generated Captions:</h3>
               <ul className="border-4 border-black p-4 bg-gray-100">
                 {captions.map((caption, index) => (
-                  <li key={index} className="mb-2 p-2 border-b-2 border-black">{caption.content}</li>
+                  <li key={index} className="mb-2 p-2 border-2 border-black bg-white">{caption.content}</li>
                 ))}
               </ul>
             </div>

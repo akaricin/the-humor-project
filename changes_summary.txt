@@ -27,3 +27,4 @@ Here's a summary of the latest changes:
     - Integrated the 4-step pipeline from `lib/pipeline.ts`.
     - Displays generated captions or an error alert.
     - Fixed a TypeError by adding a safety check for the `captions` array before rendering.
+    - Updated the results display to show the final image URL, a copy button, and a styled list of the top 10 generated captions.
