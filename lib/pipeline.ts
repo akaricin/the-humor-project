@@ -36,3 +36,27 @@ export async function uploadToS3(presignedUrl: string, file: File): Promise<bool
   return true;
 }
 
+export async function registerImage(cdnUrl: string, supabaseToken: string): Promise<{ imageId: string }> {
+  const response = await fetch('https://api.almostcrackd.ai/pipeline/upload-image-from-url', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${supabaseToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      imageUrl: cdnUrl,
+      isCommonUse: false
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: response.statusText }));
+    throw new Error(`Failed to register image: ${errorData.message || response.statusText}`);
+  }
+
+  const data = await response.json();
+  return {
+    imageId: data.imageId,
+  };
+}
+

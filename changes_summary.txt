@@ -17,3 +17,4 @@ Here's a summary of the latest changes:
 - `lib/pipeline.ts`:
     - Created a new utility file `lib/pipeline.ts` with the `generatePresignedUrl` function to handle captioning API requests, including error handling.
     - Added `uploadToS3` function to `lib/pipeline.ts` for uploading files to S3 using a presigned URL, including error handling.
+    - Added `registerImage` function to `lib/pipeline.ts` to register an image with the captioning API, including error handling.
