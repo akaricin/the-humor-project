@@ -16,3 +16,4 @@ Here's a summary of the latest changes:
     - Replaced all occurrences of `#f0e6ff` with `#b5c7eb` in `app/page.tsx`, `app/images/page.tsx`, `app/globals.css`, and `app/caption-vote/page.tsx`.
 - `lib/pipeline.ts`:
     - Created a new utility file `lib/pipeline.ts` with the `generatePresignedUrl` function to handle captioning API requests, including error handling.
+    - Added `uploadToS3` function to `lib/pipeline.ts` for uploading files to S3 using a presigned URL, including error handling.

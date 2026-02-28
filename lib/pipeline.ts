@@ -19,3 +19,20 @@ export async function generatePresignedUrl(fileType: string, supabaseToken: stri
     cdnUrl: data.cdnUrl,
   };
 }
+
+export async function uploadToS3(presignedUrl: string, file: File): Promise<boolean> {
+  const response = await fetch(presignedUrl, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': file.type,
+    },
+    body: file,
+  });
+
+  if (!response.ok) {
+    throw new Error(`S3 Upload failed: ${response.statusText}`);
+  }
+
+  return true;
+}
+
