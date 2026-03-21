@@ -88,8 +88,8 @@ function CaptionVoteContent() {
         profile_id: user.id,
         caption_id: currentCaption.id,
         vote_value: voteValue,
-        created_datetime_utc: new Date().toISOString(),
-        modified_datetime_utc: new Date().toISOString(),
+        created_by_user_id: user.id,
+        modified_by_user_id: user.id,
       });
 
       if (error) {
