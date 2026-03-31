@@ -15,7 +15,7 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 interface Caption {
-  id: number;
+  id: string;
   content: string;
   images: {
     url: string;
@@ -45,8 +45,11 @@ function CaptionVoteContent() {
     const fetchCaptions = async () => {
       const { data, error } = await supabase
         .from('captions')
-        .select('id, content, images(url)')
+        .select('id, content, images!inner(url)')
         .eq('is_public', true)
+        .eq('images.is_public', true)
+        .neq('content', '')
+        .not('content', 'is', null)
         .limit(50);
 
       if (error) {
@@ -88,15 +91,20 @@ function CaptionVoteContent() {
         profile_id: user.id,
         caption_id: currentCaption.id,
         vote_value: voteValue,
-        created_by_user_id: user.id,
-        modified_by_user_id: user.id,
+        created_datetime_utc: new Date().toISOString(),
       });
 
       if (error) {
         throw error;
       }
     } catch (error) {
-      console.error("Failed to save vote:", error);
+      let errorMessage = "Unknown error";
+      if (error && typeof error === 'object' && "message" in error) {
+        errorMessage = String(error.message);
+      } else {
+        errorMessage = String(error);
+      }
+      console.error("Failed to save vote:", errorMessage);
       // The app will still advance to the next card even if the vote fails
     } finally {
       setCurrentIndex(prev => prev + 1);
