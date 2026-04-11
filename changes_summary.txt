@@ -1,52 +1,24 @@
 All requested changes have been implemented successfully, and the application builds without errors.
 
 Here's a summary of the latest changes:
+- `app/layout.tsx`:
+    - Fixed global layout issue where pages were stretching behind the sidebar. 
+    - Removed `flex` from `body` and set `main` to `ml-[200px]` with `flex flex-col` to properly offset content from the fixed sidebar while allowing children to fill the remaining space.
+    - Added `overflow-x-hidden` to `body` to prevent horizontal scrolling.
+- `app/page.tsx`:
+    - Replaced redundant `main` tag with `div` and used `flex-1` to correctly participate in the layout's flex flow.
+- `app/upload/page.tsx` & `app/caption-vote/page.tsx`:
+    - Refined "logged-out" state: Linked the "log in" text directly to Google OAuth using a button styled as plain underlined text to blend into the sentence.
+    - Layout Fix: Switched from `min-h-screen` to `flex-1` to ensure components respect the parent container's margin and do not overlap with the sidebar.
+- `components/ImageGrid.tsx`:
+    - Replaced `w-screen h-screen` with `inset-0` in the modal backdrop to avoid layout overflow.
 - `components/Sidebar.tsx`:
-    - Confirmed sidebar width is `md:w-[250px]`.
-    - Removed `hover:bg-gray-600` from both `Link` components (sidebar buttons) to disable the background color change on hover, thus preventing an apparent text color change.
+    - Confirmed sidebar width is `200px` and set to `fixed`.
+    - Removed `hover:bg-gray-600` from both `Link` components to disable the background color change on hover.
     - Added a new `Link` to `/upload` with a "Upload" text.
-- `app/caption-vote/page.tsx`:
-    - Added `created_datetime_utc` and `modified_datetime_utc` fields to the `caption_votes` insert operation, ensuring they use `new Date().toISOString()` for GMT+0 timestamping.
-    - Fixed ESLint errors: escaped entities (quotes and apostrophes) and replaced `any` types with proper TypeScript interfaces.
-- `app/globals.css`:
-    - Updated the `body` background color from `#B5C7EB` to `#f0e6ff`, and then to `#b5c7eb`.
-- `app/images/page.tsx`:
-    - Replaced background color `#b1c5e7` with `#f0e6ff`, and then `f0e6ff` with `#b5c7eb`.
-- Global search and replace for `#b5c7eb`:
-    - No occurrences of `#b5c7eb` were found in any files, indicating that this color code is no longer present in the codebase.
-- Global search and replace for `#f0e6ff`:
-    - Replaced all occurrences of `#f0e6ff` with `#b5c7eb` in `app/page.tsx`, `app/images/page.tsx`, `app/globals.css`, and `app/caption-vote/page.tsx`.
 - `lib/pipeline.ts`:
-    - Created a new utility file `lib/pipeline.ts` with the `generatePresignedUrl` function to handle captioning API requests, including error handling.
-    - Added `uploadToS3` function to `lib/pipeline.ts` for uploading files to S3 using a presigned URL, including error handling.
-    - Added `registerImage` function to `lib/pipeline.ts` to register an image with the captioning API, including error handling.
-    - Added `generateCaptions` function to `lib/pipeline.ts` to generate captions for an image, including error handling.
-    - Updated `generateCaptions` to return the full API response object (`data`) instead of just `data.captions`.
-    - Defined `CaptionResult` interface and fixed `any` types to ensure build compatibility.
-- `app/upload/page.tsx`:
-    - Refactored into a responsive split-screen dashboard with a fixed `80vh` height on desktop.
-    - Implemented a Left Side Uploader:
-        - Added a drag-and-drop zone using a dashed border `label`.
-        - Supports direct file selection and drag-and-drop.
-        - Displays an image preview strictly limited to a maximum height of 250px using a wrapper `div` and inline styles to prevent any Flexbox-related stretching.
-        - Integrated a "Generate Captions" button with a neo-brutalist style (renamed from "Start Pipeline").
-        - Fixed a visibility issue where the native "Choose File" button was showing by replacing `className="hidden"` with `style={{ display: 'none' }}` on the file input.
-        - Implemented file type validation: only images are accepted for preview and upload.
-        - Added a temporary (5-second) "Wrong file type!" toast notification in the top-right corner.
-        - Moved the error toast outside the centering `flex` container in the JSX to ensure proper `fixed` positioning at the absolute top-right of the viewport.
-        - Styled the error toast with a black background and `#b5c7eb` text (matching the site's background).
-        - Fixed a build error by correctly closing a `<div>` and a React Fragment (`<>`) in the component's return statement.
-        - Added GIF and HEIC to the supported file types list in the UI.
-        - Removed the progress bar from the uploader side, keeping only the status message.
-    - Implemented a Right Side Results Display:
-        - Shows an empty state message when no captions are available.
-        - Displays a loading spinner and "Processing" message during the pipeline.
-        - Shows the final Image URL in a pixel-art style input with a "Copy" button.
-        - Lists the top 10 generated captions in `border-4 border-black` white boxes with a hover effect.
-        - Includes the caption ID and rank (e.g., #1) for each result.
-    - Unified file handling logic into a `handleFile` function used by both input changes and drops.
-    - Fixed ESLint errors: removed unused variables (`Link`, `step`), used `CaptionResult` type, and replaced `any` with `unknown` or proper types in `startPipeline`.
+    - Created utility functions (`generatePresignedUrl`, `uploadToS3`, `registerImage`, `generateCaptions`) to handle the image captioning pipeline.
 - Build and Vercel Readiness:
-    - Ran `npm run lint` and resolved all blocking errors.
+    - Resolved ESLint errors including `any` types and escaped entities.
     - Verified environment variable usage for Supabase.
     - Confirmed project structure follows Next.js App Router conventions.

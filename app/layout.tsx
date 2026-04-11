@@ -19,9 +19,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
       </head>
-      <body className="antialiased m-0 p-0 flex jersey-10-regular">
+      <body className="antialiased m-0 p-0 jersey-10-regular overflow-x-hidden">
         <Sidebar />
-        <main className="ml-[200px] flex-1 min-h-screen">
+        <main className="ml-[200px] min-h-screen flex flex-col">
           {children}
         </main>
       </body>

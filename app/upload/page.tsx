@@ -17,6 +17,8 @@ export default function UploadPage() {
   const [finalUrl, setFinalUrl] = useState('');
   const [fileError, setFileError] = useState(false);
 
+  const [votedCaptions, setVotedCaptions] = useState<Record<string, number>>({});
+
   useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -25,6 +27,39 @@ export default function UploadPage() {
     };
     getUser();
   }, [supabase.auth]);
+
+  const handleSignIn = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+  };
+
+  const handleVote = async (captionId: string, voteValue: 1 | -1) => {
+    if (!user) {
+      alert("Please log in to vote!");
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from('caption_votes').upsert({
+        profile_id: user.id,
+        caption_id: captionId,
+        vote_value: voteValue,
+        created_datetime_utc: new Date().toISOString(),
+        modified_datetime_utc: new Date().toISOString(),
+      }, { onConflict: 'profile_id, caption_id' });
+
+      if (error) throw error;
+
+      setVotedCaptions(prev => ({ ...prev, [captionId]: voteValue }));
+    } catch (error) {
+      console.error("Failed to save vote:", error);
+      alert("Failed to save vote. Please try again.");
+    }
+  };
 
   const handleFile = (file: File) => {
     if (!file.type.startsWith('image/')) {
@@ -113,13 +148,32 @@ export default function UploadPage() {
           <p className="font-bold uppercase text-[#b5c7eb]">Wrong file type!</p>
         </div>
       )}
-      <div className="p-[15px] min-h-screen bg-[#b5c7eb] font-mono flex items-center justify-center p-4 relative">
+      <div className="p-[15px] flex-1 bg-[#b5c7eb] font-mono relative flex flex-col items-center justify-center">
         {!user ? (
           <div className="bg-white border-4 border-black p-[15px] relative shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
-            <p className="mb-6 text-lg">Want to generate some captions? Please log in to continue.</p>
+            <p className="mb-6 text-lg">
+              Want to generate some captions? Please{' '}
+              <button 
+                onClick={handleSignIn} 
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  padding: 0, 
+                  margin: 0, 
+                  font: 'inherit', 
+                  color: 'inherit', 
+                  cursor: 'pointer', 
+                  textDecoration: 'underline', 
+                  display: 'inline' 
+                }}
+              >
+                log in
+              </button>{' '}
+              to continue.
+            </p>
           </div>
         ) : (
-        <div className="p-[15px] flex flex-col lg:flex-row w-full max-w-6xl bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden lg:h-[80vh]">
+        <div className="p-[15px] flex flex-col lg:flex-row w-full max-w-6xl my-10 bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden lg:h-[80vh]">
           {/* LEFT SIDE: Uploader */}
           <div className="lg:w-1/2 p-6 border-b-4 lg:border-b-0 lg:border-r-4 border-black flex flex-col min-h-[400px]">
             <h2 className="text-2xl font-bold mb-4 uppercase italic">1. Upload Image</h2>
@@ -213,9 +267,37 @@ export default function UploadPage() {
                   {captions.map((cap, index) => (
                     <div 
                       key={cap.id || index} 
-                      className="border-4 border-black p-[15px] bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-1"
+                      className="border-4 border-black p-[15px] bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-1 flex flex-col"
                     >
-                      <p className="font-mono text-lg leading-tight">{cap.content || JSON.stringify(cap)}</p>
+                      <div className="flex justify-between items-start gap-4">
+                        <p className="font-mono text-lg leading-tight flex-grow">{cap.content || JSON.stringify(cap)}</p>
+                        
+                        <div className="flex shrink-0">
+                          {votedCaptions[cap.id] !== undefined ? (
+                            <div className={`flex items-center justify-center border-4 border-black font-bold uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] jersey-10-regular w-[248px] h-[48px] text-[20px] ${
+                              votedCaptions[cap.id] === 1 ? 'bg-[#90ee90]' : 'bg-[#ff9999]'
+                            }`}>
+                              {votedCaptions[cap.id] === 1 ? 'UPVOTED!' : 'DOWNVOTED!'}
+                            </div>
+                          ) : (
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleVote(cap.id, 1)}
+                                className="flex items-center justify-center bg-[#90ee90] border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] font-bold uppercase jersey-10-regular w-[120px] h-[48px] text-[20px]"
+                              >
+                                Upvote
+                              </button>
+                              <button
+                                onClick={() => handleVote(cap.id, -1)}
+                                className="flex items-center justify-center bg-[#ff9999] border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] font-bold uppercase jersey-10-regular w-[120px] h-[48px] text-[20px]"
+                              >
+                                Downvote
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
                       {cap.id && (
                         <div className="flex justify-between items-center mt-3 pt-2 border-t-2 border-gray-100">
                           <span className="text-[10px] text-gray-400 font-mono">ID: {cap.id.slice(0, 8)}</span>
