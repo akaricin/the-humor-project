@@ -8,20 +8,22 @@ import LogoutButton from "./LogoutButton";
 
 export default function Sidebar() {
   const [user, setUser] = useState<User | null>(null);
+  const [mounted, setMounted] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
+    setMounted(true);
     const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
       setUser(data.user);
     };
     fetchUser();
+    
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
 
     return () => {
       authListener?.subscription.unsubscribe();
@@ -37,8 +39,10 @@ export default function Sidebar() {
     });
   };
 
+  if (!mounted) return <div className="fixed left-0 top-0 w-[200px] h-screen bg-[#152238] z-50"></div>;
+
   return (
-    <div className="fixed left-0 top-0 w-[200px] h-screen bg-[#152238] flex flex-col justify-between z-50">
+    <div className="fixed left-0 top-0 w-[200px] h-screen bg-[#152238] flex flex-col justify-between z-50 text-white jersey-10-regular">
       <nav className="pt-20 px-6 flex flex-col gap-y-12">
         <Link
           href="/"
@@ -70,7 +74,7 @@ export default function Sidebar() {
         {user ? (
           <div>
             <p className="text-3xl font-extrabold text-[#FEFEFA]">Account</p>
-            <p className="text-sm opacity-70 text-[#FEFEFA]">{user.email}</p>
+            <p className="text-sm opacity-70 text-[#FEFEFA] truncate">{user.email}</p>
             <LogoutButton />
           </div>
         ) : (

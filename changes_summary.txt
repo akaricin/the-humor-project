@@ -1,24 +1,30 @@
 All requested changes have been implemented successfully, and the application builds without errors.
 
 Here's a summary of the latest changes:
+- `app/globals.css`:
+    - Updated to official Tailwind 4 `@import "tailwindcss"` syntax.
+    - Defined a custom theme for the `Jersey 10` pixel-art font.
+    - Implemented a custom pixel-art styled scrollbar.
 - `app/layout.tsx`:
-    - Fixed global layout issue where pages were stretching behind the sidebar. 
-    - Removed `flex` from `body` and set `main` to `ml-[200px]` with `flex flex-col` to properly offset content from the fixed sidebar while allowing children to fill the remaining space.
-    - Added `overflow-x-hidden` to `body` to prevent horizontal scrolling.
-- `app/page.tsx`:
-    - Replaced redundant `main` tag with `div` and used `flex-1` to correctly participate in the layout's flex flow.
-- `app/upload/page.tsx` & `app/caption-vote/page.tsx`:
-    - Refined "logged-out" state: Linked the "log in" text directly to Google OAuth using a button styled as plain underlined text to blend into the sentence.
-    - Layout Fix: Switched from `min-h-screen` to `flex-1` to ensure components respect the parent container's margin and do not overlap with the sidebar.
+    - Restored `jersey-10-regular` global font application.
+    - Optimized layout with a fixed `Sidebar` and correctly offset `main` content area.
+- `middleware.ts` & `utils/supabase/middleware.ts`:
+    - Refactored Supabase middleware to the standard `setAll` pattern for maximum stability.
+    - Resolved the "Invalid Refresh Token" error by ensuring session tokens are updated correctly.
 - `components/ImageGrid.tsx`:
-    - Replaced `w-screen h-screen` with `inset-0` in the modal backdrop to avoid layout overflow.
+    - Restored the 4-column gallery grid layout (`md:grid-cols-4`) by fixing Tailwind 4 processing.
+    - Implemented a "Pixel Art" Brutalist style modal for image details.
+    - Fixed modal visibility using explicit `fixed` positioning and high `z-index` (999999).
+    - Added a split-screen layout (Image on Left, Description on Right).
+    - Implemented scroll-locking when the modal is active.
 - `components/Sidebar.tsx`:
-    - Confirmed sidebar width is `200px` and set to `fixed`.
-    - Removed `hover:bg-gray-600` from both `Link` components to disable the background color change on hover.
-    - Added a new `Link` to `/upload` with a "Upload" text.
+    - Restored original font sizes (`30px`) for all navigation links.
+    - Re-applied `jersey-10-regular` pixel-art font to the entire sidebar and the Sign In button.
+    - Improved hydration stability with a `mounted` state.
+- `app/upload/page.tsx` & `app/caption-vote/page.tsx`:
+    - Refined "logged-out" state with linked login buttons.
+    - Fixed layout to prevent sidebar overlap using `flex-1` and proper margins.
 - `lib/pipeline.ts`:
-    - Created utility functions (`generatePresignedUrl`, `uploadToS3`, `registerImage`, `generateCaptions`) to handle the image captioning pipeline.
+    - Created utility functions for the image processing and captioning pipeline.
 - Build and Vercel Readiness:
-    - Resolved ESLint errors including `any` types and escaped entities.
-    - Verified environment variable usage for Supabase.
-    - Confirmed project structure follows Next.js App Router conventions.
+    - Resolved ESLint errors and verified project structure for Next.js 16.
